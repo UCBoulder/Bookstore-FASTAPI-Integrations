@@ -1,0 +1,49 @@
+<BigDoc>
+    <Course>
+        <CourseBooks>
+            <isbn>9780141014494</isbn>
+            <course>HIST2220</course>
+            <term>2211</term>
+            <au>B</au>
+            <section>170R</section>
+            <title>PENGUIN HISTORICAL ATLAS OF THE MEDIEVAL WORLD</title>
+            <author>JOTISCHKY</author>
+            <requirement>O</requirement>
+            <class_nbr>26557</class_nbr>
+            <new_price> 23.00</new_price>
+            <used_price> 18.25</used_price>
+            <rental_fee> 15.50</rental_fee>
+            <used_rental_fee> 9.75</used_rental_fee>
+        </CourseBooks>
+        <CourseBooks>
+            <isbn>9781442215757</isbn>
+            <course>HIST2220</course>
+            <term>2211</term>
+            <au>B</au>
+            <section>170R</section>
+            <title>CONCISE HISTORY OF THE CRUSADES</title>
+            <author>MADDEN</author>
+            <requirement>R</requirement>
+            <class_nbr>26557</class_nbr>
+            <new_price> 37.00</new_price>
+            <used_price> 29.50</used_price>
+            <rental_fee> 26.00</rental_fee>
+            <used_rental_fee> 19.25</used_rental_fee>
+        </CourseBooks>
+        <CourseBooks>
+            <isbn>9781442606234</isbn>
+            <course>HIST2220</course>
+            <term>2211</term>
+            <au>B</au>
+            <section>170R</section>
+            <title>CRUSADES: A READER</title>
+            <author>ALLEN</author>
+            <requirement>O</requirement>
+            <class_nbr>26557</class_nbr>
+            <new_price> 53.00</new_price>
+            <used_price> 42.25</used_price>
+            <rental_fee> 39.75</rental_fee>
+            <used_rental_fee> 29.75</used_rental_fee>
+        </CourseBooks>
+    </Course>
+</BigDoc>

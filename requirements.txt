@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+pytest
+pyjwt
+sgqlc
+bcrypt
