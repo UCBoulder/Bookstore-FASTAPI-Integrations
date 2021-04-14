@@ -4,3 +4,4 @@ pytest
 pyjwt
 sgqlc
 bcrypt
+requests
