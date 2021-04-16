@@ -12,48 +12,54 @@ def make_request(
     sessions: List[str],
     terms: List[str],
     sections: List[str],
-    depts: List[str],
 ):
     logger.debug(
-        f"Request vars: courses:{courses};sessions:{sessions};sections:{sections};terms:{terms};depts:{depts}"
+        f"Request vars: courses:{courses};sessions:{sessions};sections:{sections};terms:{terms}"
     )
 
     variables = {}
 
     # process parameters into variable dict
-    # TODO fix the database to present a proper course
-    # if courses and len(courses) > 0:
-    #    variables["_courses"] = courses
+    if courses and len(courses) > 0:
+        variables["_courses"] = courses
     if sessions and len(sessions) > 0:
         variables["_sessions"] = sessions
     if terms and len(terms) > 0:
         variables["_terms"] = terms
     if sections and len(sections) > 0:
         variables["_sections"] = sections
-    if depts and len(depts) > 0:
-        variables["_depts"] = depts
 
     logger.debug(f"Graphql vars: {variables}")
 
     query = """
-query MyQuery($_sections: [String!], $_terms: [String!], $_depts: [String!], $_sessions: [String!]) {
-  FLAT_COURSE_BOOKS(where: {DEPT: {_in: $_depts}, TERM: {_in: $_terms}, SECTION: {_in: $_sections}, SESSION_CODE: {_in: $_sessions}}, order_by: {DEPT: asc, COURSE: asc}) {
-    ISBN
-    COURSE
-    TERM
-    TITLE
-    AUTHOR
-    REQ_OPT
-    NEW_RETAIL
-    USED_RETAIL
-    RENTAL_FEE
-    USED_RENTAL_FEE
-    LOW_COST_OR_OER_FLAG
-    NO_COST_FLAG
-    ISIS_COURSE
-    SESSION_CODE
-    DEPT
-    SECTION
+query MyQuery($_courses:[String!], $_terms: [String!], $_sessions: [String!], $_sections: [String!]) {
+  books_Book(where: {Session: {code: {_in: $_sessions}, Term: {code: {_in: $_terms}}}, Section: {code: {_in: $_sections}, Course_SubjectAreaCourse: {subjectareacourse_code: {_in: $_courses}}}}) {
+    author
+    isbn13
+    new_retail
+    no_cost_flag
+    title
+    used_rental_fee
+    used_retail
+    rental_fee
+    Session {
+      code
+      Term {
+        code
+      }
+    }
+    Section {
+      code
+      Course_SubjectAreaCourse {
+        siscourse_code
+        sisoffer_code
+        subjectareacourse_code
+      }
+    }
+    low_cost_or_oer_flag
+    ClassBookRequirement {
+      code
+    }
   }
 }
     """

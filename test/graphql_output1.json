@@ -1,0 +1,40 @@
+{
+  "data": {
+    "books_Book": [
+      {
+        "author": "JARVIS",
+        "code": "211.B.MUSC.3253.0.281000004208B.1",
+        "image_url": "https://www.cubookstore.com/skins/skin_1/images/nopictureicon.gif",
+        "isbn13": "281000004208B",
+        "new_retail": "$5,500.00",
+        "new_stock": 3,
+        "no_cost_flag": "N",
+        "publisher_name": "KENDOR MUSIC",
+        "title": "JAZZ EDUCATOR'S HANDBOOK (#20825)",
+        "total_stock": 3,
+        "used_rental_fee": "$0.00",
+        "used_retail": "$4,400.00",
+        "used_stock": 0,
+        "rental_fee": "$0.00",
+        "Session": {
+          "code": "B",
+          "Term": {
+            "code": "2211"
+          }
+        },
+        "Section": {
+          "code": "001",
+          "Course_SubjectAreaCourse": {
+            "siscourse_code": "111878",
+            "sisoffer_code": "1",
+            "subjectareacourse_code": "MUSC3253"
+          }
+        },
+        "low_cost_or_oer_flag": "N",
+        "ClassBookRequirement": {
+          "code": "R"
+        }
+      }
+    ]
+  }
+}

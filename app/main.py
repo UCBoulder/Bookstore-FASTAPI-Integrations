@@ -85,7 +85,6 @@ def read_item(
         sections=section1,
         terms=term1,
         sessions=session1,
-        depts=dept1,
     )
 
     # return or replace the status_code with what's received from the make_request()
@@ -96,7 +95,7 @@ def read_item(
             return results["data"]
         else:
             # convert to XML and return it.
-            books_xml = create_books(results["data"]["FLAT_COURSE_BOOKS"])
+            books_xml = create_books(results["data"]["books_Book"])
             return Response(content=books_xml, media_type="application/xml")
 
     # TODO obscure internal details of the failing

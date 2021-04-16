@@ -1,0 +1,21 @@
+{
+    "books": [
+        {
+            "author": "JARVIS",
+            "isbn13": "281000004208B",
+            "new_price": "$5,500.00",
+            "no_cost_flag": "N",
+            "title": "JAZZ EDUCATOR'S HANDBOOK (#20825)",
+            "used_rental_fee": "$0.00",
+            "used_price": "$4,400.00",
+            "rental_fee": "$0.00",
+            "session": "B",
+            "term": "2211",
+            "section": "001",
+            "course": "MUSC3253",
+            "class_nbr": "111878",
+            "low_cost_or_oer_flag": "N",
+            "requirement": "R"
+        }
+    ]
+}
