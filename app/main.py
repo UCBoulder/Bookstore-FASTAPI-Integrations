@@ -1,4 +1,4 @@
-import random, requests, string, time, logging, secrets
+import random, requests, string, time, logging, secrets, datetime
 from typing import List, Optional
 from fastapi import FastAPI, Request, Response, status, HTTPException, Depends
 from fastapi.params import Query
@@ -39,9 +39,11 @@ async def log_requests(request: Request, call_next):
     return response
 
 
-@app.get("/")
+@app.get("/ready")
 def read_root():
-    return {"Hello": "World"}
+    return {
+        "Hello": datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()
+    }
 
 
 @app.get("/SBookInfo")
@@ -101,7 +103,8 @@ def read_item(
         else:
             return {"No data returned."}
     elif gql_status == 424:
+        logger.error(f"gql_status: {gql_status}, {results}")
         return {"An error with the backend service has occurred."}
     else:
-        logger.error(f"gql_status: {gql_status}")
+        logger.error(f"gql_status: {gql_status}, {results}")
         return {"An internal error has occurred."}
