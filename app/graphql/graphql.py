@@ -1,3 +1,4 @@
+from app.utility.utility import flatten_book_records
 from typing import List, Optional
 import requests, logging, json
 
@@ -8,11 +9,17 @@ logger = logging.getLogger(__name__)
 def make_request(
     url: str,
     api_key: str,
-    courses: List[str],
-    sessions: List[str],
-    terms: List[str],
-    sections: List[str],
+    courses: List[Optional[str]],
+    sessions: List[Optional[str]],
+    terms: List[Optional[str]],
+    sections: List[Optional[str]],
 ):
+    """
+    Takes lists of selection keys and queries a GraphQL service.
+
+    Returns a "flattened" JSON list of book dictionaries.
+    """
+
     logger.debug(
         f"Request vars: courses:{courses};sessions:{sessions};sections:{sections};terms:{terms}"
     )
@@ -76,10 +83,17 @@ query MyQuery($_courses:[String!], $_terms: [String!], $_sessions: [String!], $_
 
     try:
         r = requests.post(url, json=datadict, headers=headers)
+
         if r.status_code == 200:
-            return r.status_code, r.json()
+            if r.json().get("data"):
+                return r.status_code, flatten_book_records(
+                    r.json()["data"]["books_Book"]
+                )
+            else:
+                return 422, {"Unable to parse results."}
         else:
             return r.status_code, None
+
     except requests.exceptions.ConnectionError as e:
         # Most common if the graphql server is down.
         logger.error(str(e))

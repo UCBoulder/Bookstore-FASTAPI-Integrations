@@ -7,7 +7,7 @@ from pydantic import BaseSettings
 
 # app-specific modules and packages
 import app.graphql.graphql as gql
-from app.utility.utility import create_books
+from app.utility.utility import create_books, flatten_book_records
 from . import config
 
 logging.config.fileConfig("app/logging.conf", disable_existing_loggers=False)
@@ -90,13 +90,18 @@ def read_item(
     # return or replace the status_code with what's received from the make_request()
     response.status_code = gql_status
 
-    if gql_status == 200 and results.get("data"):
-        if is_json:
-            return results["data"]
+    if gql_status == 200:
+        if len(results) > 0:
+            if is_json:
+                return results
+            else:
+                # convert to XML and return it.
+                books_xml = create_books(results)
+                return Response(content=books_xml, media_type="application/xml")
         else:
-            # convert to XML and return it.
-            books_xml = create_books(results["data"]["books_Book"])
-            return Response(content=books_xml, media_type="application/xml")
-
-    # TODO obscure internal details of the failing
-    return {"An internal error has occurred."}
+            return {"No data returned."}
+    elif gql_status == 424:
+        return {"An error with the backend service has occurred."}
+    else:
+        logger.error(f"gql_status: {gql_status}")
+        return {"An internal error has occurred."}

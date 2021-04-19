@@ -5,3 +5,4 @@ pyjwt
 sgqlc
 bcrypt
 requests
+python-box

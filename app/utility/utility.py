@@ -1,59 +1,71 @@
+import logging
 import xml.etree.ElementTree as e
+from box import Box
+
+logger = logging.getLogger(__name__)
 
 
 def flatten_book_record(book):
     """
     Take a book record in gql JSON and flatten it down.
+
+    Returns a dict of a "book"
     """
 
-    result = {}
-    result["isbn13"] = book["isbn13"]
-    result["title"] = book["title"]
-    result["author"] = book["author"]
-    result["new_price"] = book["new_retail"]
-    result["used_price"] = book["used_retail"]
-    result["rental_fee"] = book["rental_fee"]
-    result["used_rental_fee"] = book["used_rental_fee"]
-    result["no_cost_flag"] = book["no_cost_flag"]
-    result["low_cost_or_oer_flag"] = book["low_cost_or_oer_flag"]
+    book = Box(book)
 
-    if book.get("Section"):
-        result["section"] = book["Section"]["code"]
-        if book["Section"]["Course_SubjectAreaCourse"]:
-            result["course"] = book["Section"]["Course_SubjectAreaCourse"][
-                "subjectareacourse_code"
-            ]
-            result["class_nbr"] = book["Section"]["Course_SubjectAreaCourse"][
-                "siscourse_code"
-            ]
+    result = Box()
 
-    if book.get("Session"):
-        result["session"] = book["Session"]["code"]
-        if book["Session"].get("Term"):
-            result["term"] = book["Session"]["Term"]["code"]
+    result.isbn13 = book.isbn13
+    result.title = book.title
+    result.author = book.author
+    result.new_price = book.new_retail
+    result.used_price = book.used_retail
+    result.rental_fee = book.rental_fee
+    result.used_rental_fee = book.used_rental_fee
+    result.no_cost_flag = book.no_cost_flag
+    result.low_cost_or_oer_flag = book.low_cost_or_oer_flag
+    result.section = book.Section.code
+    result.course = book.Section.Course_SubjectAreaCourse.subjectareacourse_code
+    result.class_nbr = book.Section.Course_SubjectAreaCourse.siscourse_code
+    result.session = book.Session.code
+    result.term = book.Session.Term.code
+    result.requirement = book.ClassBookRequirement.code
 
-    if book.get("ClassBookRequirement"):
-        result["requirement"] = book["ClassBookRequirement"]["code"]
+    return result.to_dict()
 
-    return result
+
+def flatten_book_records(books):
+    """
+    Take the big blop of JSON and convert to a list of json flat "books"
+    """
+
+    response = []
+    for book in books:
+        # get the json back in a flat structure
+        flat_book = flatten_book_record(book)
+
+        response.append(flat_book)
+
+    return {"books": response}
 
 
 def create_books(books_json):
     """
-    Take the big blop of JSON and convert to XML
+    Take the flattened JSON and convert to XML
     """
 
     root = e.Element("BigDoc")
     course = e.SubElement(root, "Course")
-    for book in books_json:
-        # get the json back in a flat structure
-        flat_book = flatten_book_record(book)
+
+    # get the list from the 'books' key
+    for book in books_json["books"]:
 
         # Create a "book" element
         course_book = e.SubElement(course, "CourseBooks")
 
         # for each property of the flat book, create an XML element
-        for k, v in flat_book.items():
+        for k, v in book.items():
             e.SubElement(course_book, k).text = v
 
     xmlstr = e.tostring(root, encoding="unicode", method="xml")
