@@ -25,7 +25,9 @@ def flatten_book_record(book):
     result.rental_fee = book.rental_fee
     result.used_rental_fee = book.used_rental_fee
     result.no_cost_flag = book.no_cost_flag
-    result.low_cost_or_oer_flag = book.low_cost_or_oer_flag
+    result.low_cost_flag = book.low_cost_flag
+    result.no_cost_flag = book.no_cost_flag
+    result.oer_flag = book.oer_flag
     result.section = book.Section.code
     result.course = book.Section.Course_SubjectAreaCourse.subjectareacourse_code
     result.class_nbr = book.Section.Course_SubjectAreaCourse.siscourse_code
