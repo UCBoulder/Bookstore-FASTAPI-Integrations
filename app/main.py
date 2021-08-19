@@ -1,13 +1,21 @@
-import random, requests, string, time, logging, secrets, datetime
+"""" defines fastapi bookstore endpoints """
+
+import datetime
+import logging
+import random
+import secrets
+import string
+import time
 from typing import List, Optional
-from fastapi import FastAPI, Request, Response, status, HTTPException, Depends
+
+from fastapi import Depends, FastAPI, HTTPException, Request, Response, status
 from fastapi.params import Query
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from pydantic import BaseSettings
 
 # app-specific modules and packages
 import app.graphql.graphql as gql
-from app.utility.utility import create_books, flatten_book_records
+from app.utility.utility import create_books
+
 from . import config
 
 logging.config.fileConfig("app/logging.conf", disable_existing_loggers=False)
@@ -25,7 +33,7 @@ async def log_requests(request: Request, call_next):
     Found here: https://philstories.medium.com/fastapi-logging-f6237b84ea64
     """
     idem = "".join(random.choices(string.ascii_uppercase + string.digits, k=6))
-    logger.info(f"rid={idem} start request path={request.url.path}")
+    logger.info("rid=%s start request path=%s", idem, request.url.path)
     start_time = time.time()
 
     response = await call_next(request)
@@ -33,7 +41,10 @@ async def log_requests(request: Request, call_next):
     process_time = (time.time() - start_time) * 1000
     formatted_process_time = "{0:.2f}".format(process_time)
     logger.info(
-        f"rid={idem} completed_in={formatted_process_time}ms status_code={response.status_code}"
+        "rid=%s completed_in=%sms status_code=%s",
+        idem,
+        formatted_process_time,
+        response.status_code,
     )
 
     return response
@@ -41,11 +52,13 @@ async def log_requests(request: Request, call_next):
 
 @app.get("/ready")
 def read_root():
+    """ ready status by way of returned datetime """
     return {
         "Hello": datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()
     }
 
 
+# pylint: disable=too-many-arguments,unused-argument
 @app.get("/SBookInfo")
 def read_item(
     response: Response,
@@ -62,8 +75,8 @@ def read_item(
 
     Basic user/password auth.
 
-    Note the duplicate session1 queries args:
-    e.g., https://ws.colorado.edu/BookStore/SBookInfo?course1=ACCT3230&session1=001&session1=B&term1=2217
+    Note the duplicate session1 queries args, for ex:
+    https://ws.colorado.edu/BookStore/SBookInfo?course1=ACCT3230&session1=001&session1=B&term1=2217
     """
 
     correct_username = secrets.compare_digest(
@@ -92,6 +105,7 @@ def read_item(
     # return or replace the status_code with what's received from the make_request()
     response.status_code = gql_status
 
+    # pylint: disable=no-else-return
     if gql_status == 200:
         if len(results) > 0:
             if is_json:
@@ -103,8 +117,8 @@ def read_item(
         else:
             return {"No data returned."}
     elif gql_status == 424:
-        logger.error(f"gql_status: {gql_status}, {results}")
+        logger.error("gql_status: %s, %s", gql_status, results)
         return {"An error with the backend service has occurred."}
     else:
-        logger.error(f"gql_status: {gql_status}, {results}")
+        logger.error("gql_status: %s, %s", gql_status, results)
         return {"An internal error has occurred."}

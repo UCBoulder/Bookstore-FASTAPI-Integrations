@@ -1,5 +1,6 @@
+""" various utility functions for bookstore api """
 import logging
-import xml.etree.ElementTree as e
+import xml.etree.ElementTree as e  # nosec
 from box import Box
 
 logger = logging.getLogger(__name__)
@@ -65,8 +66,8 @@ def create_books(books_json):
         course_book = e.SubElement(course, "CourseBooks")
 
         # for each property of the flat book, create an XML element
-        for k, v in book.items():
-            e.SubElement(course_book, k).text = v
+        for key, val in book.items():
+            e.SubElement(course_book, key).text = val
 
     xmlstr = e.tostring(root, encoding="unicode", method="xml")
     return xmlstr
