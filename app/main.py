@@ -1,7 +1,9 @@
 """" defines fastapi bookstore endpoints """
 
+import os
 import datetime
 import logging
+import logging.config
 import random
 import secrets
 import string
@@ -16,12 +18,16 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import app.graphql.graphql as gql
 from app.utility.utility import create_books
 
-from . import config
+from app.config import Settings
 
-logging.config.fileConfig("app/logging.conf", disable_existing_loggers=False)
+file_dir = os.path.split(os.path.realpath(__file__))[0]
+logging.config.fileConfig(
+    os.path.join(file_dir, "logging.conf"), disable_existing_loggers=False
+)
 
 logger = logging.getLogger(__name__)
 
+settings = Settings()
 app = FastAPI()
 security = HTTPBasic()
 
@@ -80,10 +86,10 @@ def read_item(
     """
 
     correct_username = secrets.compare_digest(
-        credentials.username, config.settings.basic_username
+        credentials.username, settings.basic_username
     )
     correct_password = secrets.compare_digest(
-        credentials.password, config.settings.basic_password
+        credentials.password, settings.basic_password
     )
     if not (correct_username and correct_password):
         raise HTTPException(
@@ -94,8 +100,8 @@ def read_item(
 
     # Call the GraphQL service to fetch data
     gql_status, results = gql.make_request(
-        url=config.settings.graphql_url,
-        api_key=config.settings.graphql_key,
+        url=settings.graphql_url,
+        api_key=settings.graphql_key,
         courses=course1,
         sections=section1,
         terms=term1,

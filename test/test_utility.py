@@ -1,7 +1,11 @@
 from __future__ import absolute_import
-import json, logging, os, sys
+
+import json
+import logging
+import os
+import sys
 import xml.etree.ElementTree as e
-from fastapi.testclient import TestClient
+
 from app.utility.utility import create_books, flatten_book_record, flatten_book_records
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))

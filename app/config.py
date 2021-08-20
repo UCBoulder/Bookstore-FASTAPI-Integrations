@@ -13,6 +13,3 @@ class Settings(BaseSettings):
     graphql_key: str
     basic_username: str
     basic_password: str
-
-
-settings = Settings()
