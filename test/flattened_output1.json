@@ -14,7 +14,9 @@
             "section": "001",
             "course": "MUSC3253",
             "class_nbr": "111878",
-            "low_cost_or_oer_flag": "N",
+            "low_cost_flag": "N",
+            "no_cost_flag": "N",
+            "oer_flag": "N",
             "requirement": "R"
         }
     ]
