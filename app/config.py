@@ -3,7 +3,7 @@ from pydantic import BaseSettings
 
 # pylint: disable=too-few-public-methods
 class Settings(BaseSettings):
-    """ settings for pydantic """
+    """settings for pydantic"""
 
     app_name: str = "Bookstore GraphQL REST Shim"
     admin_email: str = (

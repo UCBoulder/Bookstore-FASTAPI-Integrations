@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 
 @pytest.fixture(autouse=True)
 def app(monkeypatch):
-    """ patch in our env vars required for pydantic settings """
+    """patch in our env vars required for pydantic settings"""
     monkeypatch.setenv("GRAPHQL_KEY", "test")
     monkeypatch.setenv("BASIC_USERNAME", "test")
     monkeypatch.setenv("BASIC_PASSWORD", "test")

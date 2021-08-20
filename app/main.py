@@ -58,7 +58,7 @@ async def log_requests(request: Request, call_next):
 
 @app.get("/ready")
 def read_root():
-    """ ready status by way of returned datetime """
+    """ready status by way of returned datetime"""
     return {
         "Hello": datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()
     }
