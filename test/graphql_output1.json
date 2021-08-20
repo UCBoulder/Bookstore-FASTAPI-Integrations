@@ -30,7 +30,9 @@
             "subjectareacourse_code": "MUSC3253"
           }
         },
-        "low_cost_or_oer_flag": "N",
+        "low_cost_flag": "N",
+        "no_cost_flag": "N",
+        "oer_flag": "N",
         "ClassBookRequirement": {
           "code": "R"
         }
