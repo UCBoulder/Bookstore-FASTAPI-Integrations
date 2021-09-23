@@ -4,6 +4,4 @@ LABEL org.opencontainers.image.source https://github.com/UCBoulder/Bookstore-FAS
 COPY requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt
 
-EXPOSE 80/tcp
-
 COPY ./app /app/app

@@ -22,6 +22,7 @@ docker-build:
 docker-run:
 	docker run -d --name bookstore-api \
 	-p 8988:80 \
+	-e GRAPHQL_URL=${GRAPHQL_URL} \
 	-e GRAPHQL_KEY=${GRAPHQL_KEY} \
 	-e BASIC_USERNAME=${BASIC_USERNAME} \
 	-e BASIC_PASSWORD=${BASIC_PASSWORD} \

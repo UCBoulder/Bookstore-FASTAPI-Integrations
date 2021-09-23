@@ -8,7 +8,7 @@ Config variables -- other than those passed in by environment are in the config.
 
 ### Environment Vars
 
-Set environment variables for GRAPHQL_KEY, BASIC_USERNAME, and BASIC_PASSWORD. For ex:
+Set environment variables for GRAPHQL_URL, GRAPHQL_KEY, BASIC_USERNAME, and BASIC_PASSWORD. For ex:
 
 ```shell
 #bash
