@@ -4,7 +4,9 @@ pytest
 pyjwt
 sgqlc
 bcrypt
-requests
+requests[security]
+pyopenssl
+idna
 python-box
 black
 bandit
