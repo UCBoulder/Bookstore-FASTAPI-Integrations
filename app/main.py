@@ -45,7 +45,7 @@ async def log_requests(request: Request, call_next):
     response = await call_next(request)
 
     process_time = (time.time() - start_time) * 1000
-    formatted_process_time = "{0:.2f}".format(process_time)
+    formatted_process_time = f'{process_time:.2f}'
     logger.info(
         "rid=%s completed_in=%sms status_code=%s",
         idem,
