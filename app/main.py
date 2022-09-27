@@ -4,7 +4,6 @@ import os
 import datetime
 import logging
 import logging.config
-import random
 import secrets
 import string
 import time
@@ -38,14 +37,27 @@ async def log_requests(request: Request, call_next):
     Tidy bit of logging assist to show how long each call takes.
     Found here: https://philstories.medium.com/fastapi-logging-f6237b84ea64
     """
-    idem = "".join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
+    # Create idem with secrets module instead of random module
+    # which is unsuitable for security/cryptographic purposes
+    string_source = string.ascii_uppercase + string.digits
+    idem = secrets.choice(string.ascii_uppercase)
+    idem += secrets.choice(string.digits)
+
+    for _ in range(4):
+        idem += secrets.choice(string_source)
+
+    char_list = list(idem)
+    secrets.SystemRandom().shuffle(char_list)
+    idem = "".join(char_list)
+
     logger.info("rid=%s start request path=%s", idem, request.url.path)
     start_time = time.time()
 
     response = await call_next(request)
 
     process_time = (time.time() - start_time) * 1000
-    formatted_process_time = f'{process_time:.2f}'
+    formatted_process_time = f"{process_time:.2f}"
     logger.info(
         "rid=%s completed_in=%sms status_code=%s",
         idem,
