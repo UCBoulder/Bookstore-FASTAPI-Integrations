@@ -66,6 +66,8 @@ query MyQuery($_courses:[String!], $_terms: [String!], $_sessions: [String!], $_
     low_cost_flag
     no_cost_flag
     oer_flag
+    cc_id
+    item_id
     ClassBookRequirement {
       code
     }

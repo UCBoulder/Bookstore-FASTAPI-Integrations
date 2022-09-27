@@ -34,6 +34,8 @@ def flatten_book_record(book):
     result.session = book.Session.code
     result.term = book.Session.Term.code
     result.requirement = book.ClassBookRequirement.code
+    result.cc_id = book.cc_id
+    result.item_id = book.item_id
 
     return result.to_dict()
 
