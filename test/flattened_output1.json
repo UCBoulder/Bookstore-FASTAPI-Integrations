@@ -17,7 +17,9 @@
             "low_cost_flag": "N",
             "no_cost_flag": "N",
             "oer_flag": "N",
-            "requirement": "R"
+            "requirement": "R",
+            "cc_id": "null",
+            "item_id": "null"
         }
     ]
 }

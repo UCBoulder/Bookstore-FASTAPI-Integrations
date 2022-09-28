@@ -33,6 +33,8 @@
         "low_cost_flag": "N",
         "no_cost_flag": "N",
         "oer_flag": "N",
+        "cc_id": "null",
+        "item_id": "null",
         "ClassBookRequirement": {
           "code": "R"
         }

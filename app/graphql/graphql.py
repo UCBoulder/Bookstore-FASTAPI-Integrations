@@ -66,6 +66,8 @@ query MyQuery($_courses:[String!], $_terms: [String!], $_sessions: [String!], $_
     low_cost_flag
     no_cost_flag
     oer_flag
+    cc_id
+    item_id
     ClassBookRequirement {
       code
     }
@@ -88,8 +90,9 @@ query MyQuery($_courses:[String!], $_terms: [String!], $_sessions: [String!], $_
 
         if r.status_code == 200:
             if r.json().get("data"):
-                return r.status_code, flatten_book_records(
-                    r.json()["data"]["books_v0_2_Book"]
+                return (
+                    r.status_code,
+                    flatten_book_records(r.json()["data"]["books_v0_2_Book"]),
                 )
             else:
                 return 422, {"Unable to parse results."}
