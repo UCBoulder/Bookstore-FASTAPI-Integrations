@@ -71,7 +71,7 @@ def create_books(books_json):
 
         # for each property of the flat book, create an XML element
         for key, val in book.items():
-            e.SubElement(course_book, key).text = val
+            e.SubElement(course_book, key).text = str(val)
 
     xmlstr = e.tostring(root, encoding="unicode", method="xml")
     return xmlstr
