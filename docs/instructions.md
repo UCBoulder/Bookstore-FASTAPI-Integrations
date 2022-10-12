@@ -35,7 +35,20 @@ Note: The API endpoint is public-facing, but restricted to a sub-section of IP a
 
 ## Deployment
 
-Instructions to deploy the Postgres database and Hasura GraphQL service are contained within the OIT Data Services LastPass instance.
+Many or most components which OIT Data Services runs for this API endpoint revolve around pre-built images from open source communities or stored within Github Packages. These images run via Podman on eds-data1.
+
+### PostgreSQL
+
+- __PostgreSQL__: follow guide here: https://hasura.io/docs/latest/graphql/core/deployment/postgres-requirements.html
+
+### Hasura (GraphQL)
+
+- __Hasura__: follow rough specifications found on the following webpage: https://hasura.io/docs/latest/graphql/core/deployment/deployment-guides/docker.html#deployment-docker
+
+### Fast API
+
+- __Bookstore FastAPI Integrations__: Follow specifications on https://github.com/UCBoulder/Bookstore-FASTAPI-Integrations and reference https://docs.github.com/en/packages
+- __Network Firewall__: The API endpoint is public-facing, but restricted to a sub-section of IP addresses that are dedicated to Leepfrog. See ServiceNow case GREQ0323759 for more details here. 
 
 To deploy changes to the FastAPI application:
 
@@ -44,5 +57,5 @@ To deploy changes to the FastAPI application:
 3. Update the XML return response in the FastAPI code, particularly the `make_request()` and `flatten_books` functions in `graphql.py` and `utility.py`, respectively.
 4. To test the functionality of the API, you can run the API locally using the instructions contained in the README.md. This will require setting local environment variables in your shell, including a `graphql_key`, `basic_username`, and `basic_password`. These can be set arbitrarily, but specific credentials for these variables are available in LasPass for consistency in prod environments. When running the API on a local server, you can check for data responses in a web browser at `{ip_address}:{port}/ready`, `{ip_address}:{port}/SBookInfo?course1=ACCT3230&is_json=False`, and `{ip_address}:{port}/SBookInfo?course1=ACCT3230&is_json=True`. You can also deploy a local Docker container to test locally as well.
 4. When creating a PR to merge changes can be into `main`, there are several automated testing processes that are automatically started via a Github Action. These include linting, security, and output tests which are stored in this repo as well.
-5. After confirming that changes have passed the automated tests, are merged to main, and function as expected locally, it is time to update the image stored in the Github container repository. Follow the steps in the [Github docs](https://docs.github.com/en/packages/learn-github-packages/connecting-a-repository-to-a-package) to authenticate to Github, build and tag your new container image with semantic versioning, and push your new image to the Github Container Registry. 
-6. After creating a new image in the Github Container Registry, access the eds-data1 server and check running docker/podman containers. Run the `docker run` command stored in LastPass under the Bookstore API. You may need to stop and delete old containers that use the same container name (e.g., "bookstore-api") before recreating the container.
+5. After confirming that changes have passed the automated tests, are merged to main, and function as expected locally, it is time to update the image stored in CU Boulder's Github Container Repository. Follow the steps in the [Github docs](https://docs.github.com/en/packages/learn-github-packages/connecting-a-repository-to-a-package) to authenticate to Github, build and tag your new package with semantic versioning, and push it to the Github Container Registry. It is helpful to create a version tag (e.g. `v0.2.1`) as well as a `latest` tag.
+6. After creating a new image in the Github Container Registry, access the eds-data1 server and check running docker/podman containers. Run the `docker run` command stored in LastPass under the Bookstore API. This command maps external traffic to the necessary port in the container. You may need to stop and delete old containers that use the same container name (e.g., "bookstore-api") before recreating the container.
